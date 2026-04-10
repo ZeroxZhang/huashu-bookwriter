@@ -1,0 +1,256 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Book Outline",
+  "description": "书籍大纲数据结构，用于定义书籍的整体结构和章节安排",
+  "type": "object",
+  "required": ["book_title", "book_type", "parts"],
+  "properties": {
+    "book_title": {
+      "type": "string",
+      "description": "书籍标题"
+    },
+    "book_subtitle": {
+      "type": "string",
+      "description": "副标题"
+    },
+    "book_type": {
+      "type": "string",
+      "enum": ["A", "B", "C"],
+      "enumDescriptions": [
+        "从入门到精通类型，10章±2，适合技术手册",
+        "橙皮书类型，17-35节，适合深度技术文档",
+        "快速指南类型，12-17章，适合概念+实战"
+      ],
+      "description": "书籍类型：A=从入门到精通, B=橙皮书, C=快速指南"
+    },
+    "target_reader": {
+      "type": "string",
+      "description": "目标读者"
+    },
+    "based_on": {
+      "type": "string",
+      "description": "基于的产品/技术/版本"
+    },
+    "last_updated": {
+      "type": "string",
+      "format": "date",
+      "description": "最后更新日期，格式：YYYY-MM-DD"
+    },
+    "parts": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["part_id", "part_title", "chapters"],
+        "properties": {
+          "part_id": {
+            "type": "string",
+            "pattern": "^Part [0-9]+$",
+            "description": "Part编号，如Part 1"
+          },
+          "part_title": {
+            "type": "string",
+            "description": "Part标题",
+            "examples": ["起步", "核心能力", "进阶实战"]
+          },
+          "part_description": {
+            "type": "string",
+            "description": "Part描述，一句话说明本部分内容"
+          },
+          "chapters": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "object",
+              "required": ["chapter_id", "chapter_title"],
+              "properties": {
+                "chapter_id": {
+                  "type": "string",
+                  "pattern": "^§[0-9]{2}$",
+                  "description": "章节编号，如§01",
+                  "examples": ["§01", "§02", "§10"]
+                },
+                "chapter_title": {
+                  "type": "string",
+                  "description": "章节标题（断言句，非主题词）",
+                  "examples": ["Claude Code改变了什么", "安装和第一次跑通"]
+                },
+                "chapter_title_en": {
+                  "type": "string",
+                  "description": "英文标题"
+                },
+                "key_points": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  },
+                  "description": "核心要点列表",
+                  "examples": [["时间线锚点开头", "对比表格", "类比级联解释"]]
+                },
+                "chapter_type": {
+                  "type": "string",
+                  "enum": ["concept", "tutorial", "analysis"],
+                  "enumDescriptions": [
+                    "概念讲解型：解释是什么、为什么、核心架构",
+                    "实战教程型：手把手教学，读者跟着做能复现",
+                    "深度分析型：对比评测、案例拆解、趋势分析"
+                  ],
+                  "description": "章节类型"
+                },
+                "estimated_pages": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 50,
+                  "description": "预估页数"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "appendix": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["appendix_id", "appendix_title"],
+        "properties": {
+          "appendix_id": {
+            "type": "string",
+            "pattern": "^[A-Z]$",
+            "description": "附录编号，如A、B、C",
+            "examples": ["A", "B", "C"]
+          },
+          "appendix_title": {
+            "type": "string",
+            "description": "附录标题",
+            "examples": ["常见问题FAQ", "命令速查表"]
+          }
+        }
+      }
+    },
+    "reading_guide": {
+      "type": "array",
+      "description": "阅读指南，按天或主题组织",
+      "items": {
+        "type": "object",
+        "required": ["day", "chapters", "goal"],
+        "properties": {
+          "day": {
+            "type": "string",
+            "pattern": "^Day [0-9]+$",
+            "description": "阅读天数",
+            "examples": ["Day 1", "Day 2-3"]
+          },
+          "chapters": {
+            "type": "string",
+            "pattern": "^§[0-9]{2}(-§[0-9]{2})?$",
+            "description": "章节范围",
+            "examples": ["§01-§03", "§04-§06"]
+          },
+          "goal": {
+            "type": "string",
+            "description": "学习目标",
+            "examples": ["从零到第一次跑通", "掌握核心能力"]
+          }
+        }
+      }
+    }
+  },
+  "examples": [
+    {
+      "book_title": "Claude Code 从入门到精通",
+      "book_subtitle": "A Complete Guide from Beginner to Master",
+      "book_type": "A",
+      "target_reader": "从零开始使用Claude Code的开发者",
+      "based_on": "Claude Code v2.1.88",
+      "last_updated": "2026-04-09",
+      "parts": [
+        {
+          "part_id": "Part 1",
+          "part_title": "起步",
+          "part_description": "从零到一。读者读完能跑通第一个项目。",
+          "chapters": [
+            {
+              "chapter_id": "§01",
+              "chapter_title": "为什么是Claude Code",
+              "chapter_title_en": "Why Claude Code",
+              "key_points": ["时间线锚点开头", "与Cursor对比", "适合谁/不适合谁"],
+              "chapter_type": "concept",
+              "estimated_pages": 8
+            },
+            {
+              "chapter_id": "§02",
+              "chapter_title": "安装和第一次跑通",
+              "chapter_title_en": "Installation and First Run",
+              "key_points": ["三种安装方式", "第一次对话", "踩坑记录"],
+              "chapter_type": "tutorial",
+              "estimated_pages": 6
+            },
+            {
+              "chapter_id": "§03",
+              "chapter_title": "第一个真实项目",
+              "chapter_title_en": "Your First Real Project",
+              "key_points": ["项目需求", "从零搭建", "预期结果"],
+              "chapter_type": "tutorial",
+              "estimated_pages": 10
+            }
+          ]
+        },
+        {
+          "part_id": "Part 2",
+          "part_title": "核心能力",
+          "part_description": "深入产品的关键能力，每章一个核心概念。",
+          "chapters": [
+            {
+              "chapter_id": "§04",
+              "chapter_title": "核心工作流",
+              "chapter_type": "concept",
+              "estimated_pages": 8
+            },
+            {
+              "chapter_id": "§05",
+              "chapter_title": "CLAUDE.md：给AI一张地图",
+              "chapter_type": "tutorial",
+              "estimated_pages": 10
+            },
+            {
+              "chapter_id": "§06",
+              "chapter_title": "进阶对话技巧",
+              "chapter_type": "concept",
+              "estimated_pages": 8
+            }
+          ]
+        }
+      ],
+      "appendix": [
+        {
+          "appendix_id": "A",
+          "appendix_title": "51万行代码告诉我们的事"
+        }
+      ],
+      "reading_guide": [
+        {
+          "day": "Day 1",
+          "chapters": "§01-§03",
+          "goal": "从零到第一次跑通"
+        },
+        {
+          "day": "Day 2-3",
+          "chapters": "§04-§06",
+          "goal": "掌握核心能力"
+        },
+        {
+          "day": "Day 4-5",
+          "chapters": "§07-§10",
+          "goal": "进阶实战"
+        },
+        {
+          "day": "Day 6",
+          "chapters": "附录",
+          "goal": "趋势预判"
+        }
+      ]
+    }
+  ]
+}
