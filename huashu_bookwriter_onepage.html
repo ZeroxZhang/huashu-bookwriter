@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>花叔橙皮书创作 Skill - OnePage</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap');
+
+:root {
+    --primary: #F26522; /* 橙皮书特征橙色 */
+    --primary-light: #FFF0E5;
+    --text-main: #2D3748;
+    --text-muted: #718096;
+    --bg-page: #F7FAFC;
+    --bg-card: #FFFFFF;
+    --border-color: #E2E8F0;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+    font-family: 'Noto Sans SC', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background-color: var(--bg-page);
+    background-image: 
+        radial-gradient(circle at 100% 0%, #FFF0E5 0%, transparent 25%),
+        radial-gradient(circle at 0% 100%, #EBF4FF 0%, transparent 25%);
+    color: var(--text-main);
+    width: 1920px;
+    height: 1080px;
+    overflow: hidden;
+    padding: 50px 80px;
+    display: grid;
+    /* 总高1080 - 100(上下padding) = 980px 可用 */
+    /* 分配: Header 100px + Gap 40px + Main 760px + Gap 40px + Footer 40px = 980px */
+    grid-template-rows: 100px 760px 40px;
+    gap: 40px;
+    align-content: start;
+    position: relative;
+}
+
+/* 装饰网格背景 */
+.grid-bg {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-size: 40px 40px;
+    background-image: linear-gradient(to right, rgba(0,0,0,0.02) 1px, transparent 1px),
+                      linear-gradient(to bottom, rgba(0,0,0,0.02) 1px, transparent 1px);
+    z-index: -1;
+    pointer-events: none;
+}
+
+/* Header */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    border-bottom: 2px solid var(--border-color);
+    padding-bottom: 20px;
+    height: 100px;
+}
+
+.header-left h1 {
+    font-size: 46px;
+    font-weight: 900;
+    letter-spacing: -0.5px;
+    color: #1A202C;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+.header-left h1 .tag {
+    font-size: 16px;
+    font-weight: 700;
+    background: var(--primary);
+    color: white;
+    padding: 6px 12px;
+    border-radius: 8px;
+    vertical-align: middle;
+    letter-spacing: 1px;
+}
+.header-left p {
+    font-size: 20px;
+    color: var(--text-muted);
+    margin-top: 10px;
+    font-weight: 400;
+}
+
+.header-right {
+    text-align: right;
+    margin-bottom: 8px;
+}
+.tech-stack {
+    display: flex;
+    gap: 12px;
+}
+.tech-badge {
+    background: white;
+    border: 1px solid var(--border-color);
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-muted);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+}
+
+/* Main Grid */
+main {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 40px;
+    height: 760px;
+}
+
+/* Cards */
+.card {
+    background: var(--bg-card);
+    border-radius: 20px;
+    padding: 40px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.03), 0 1px 3px rgba(0,0,0,0.02);
+    border: 1px solid rgba(255,255,255,0.8);
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    overflow: hidden;
+    height: 760px;
+}
+
+.card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; height: 4px;
+    background: linear-gradient(90deg, var(--primary), #FF9800);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+.card:hover::before { opacity: 1; }
+
+.card-title {
+    font-size: 26px;
+    font-weight: 800;
+    color: #2D3748;
+    margin-bottom: 30px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    height: 40px;
+}
+.card-title .icon-wrapper {
+    width: 40px;
+    height: 40px;
+    background: var(--primary-light);
+    color: var(--primary);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+}
+
+/* Column 1: Workflow */
+.workflow {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 610px; /* 760 - 80(padding) - 40(title) - 30(margin) */
+    position: relative;
+}
+.workflow::before {
+    content: '';
+    position: absolute;
+    left: 24px; top: 15px; bottom: 15px;
+    width: 2px;
+    background: var(--border-color);
+    z-index: 1;
+}
+.step {
+    display: flex;
+    gap: 20px;
+    position: relative;
+    z-index: 2;
+    background: white;
+    padding: 12px 15px;
+    border-radius: 12px;
+    border: 1px solid transparent;
+    transition: border 0.2s;
+}
+.step:hover {
+    border-color: var(--primary-light);
+    box-shadow: 0 4px 12px rgba(242, 101, 34, 0.05);
+}
+.step-num {
+    width: 48px; height: 48px;
+    background: white;
+    border: 2px solid var(--border-color);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    font-size: 18px;
+    color: var(--text-muted);
+    flex-shrink: 0;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+}
+.step:nth-child(1) .step-num, .step:nth-child(4) .step-num, .step:nth-child(6) .step-num {
+    border-color: var(--primary);
+    color: var(--primary);
+    background: var(--primary-light);
+}
+.step-content {
+    padding-top: 2px;
+}
+.step-content h4 {
+    font-size: 18px;
+    font-weight: 700;
+    color: #2D3748;
+    margin-bottom: 6px;
+}
+.step-content p {
+    font-size: 14px;
+    color: var(--text-muted);
+    line-height: 1.6;
+}
+
+/* Column 2: Blueprints */
+.blueprint-list {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 610px;
+}
+.bp-item {
+    background: #F8FAFC;
+    border: 1px solid var(--border-color);
+    border-radius: 16px;
+    padding: 24px;
+    position: relative;
+    overflow: hidden;
+    height: 185px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.bp-item::after {
+    content: '';
+    position: absolute;
+    right: -20px; bottom: -20px;
+    width: 100px; height: 100px;
+    background: radial-gradient(circle, var(--primary-light) 0%, transparent 70%);
+    opacity: 0.5;
+}
+.bp-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+}
+.bp-header h3 {
+    font-size: 20px;
+    font-weight: 800;
+    color: #2D3748;
+}
+.bp-badge {
+    background: #EDF2F7;
+    color: #4A5568;
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 600;
+    border: 1px solid var(--border-color);
+}
+.bp-item p {
+    font-size: 14px;
+    color: #4A5568;
+    line-height: 1.6;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+}
+.bp-item p strong {
+    color: #2D3748;
+    font-weight: 700;
+    min-width: 65px;
+}
+
+/* Column 3: Style & QC */
+.col-3-wrapper {
+    display: grid;
+    /* 总高 760px = 360px + 40px(gap) + 360px */
+    grid-template-rows: 360px 360px;
+    gap: 40px;
+    height: 760px;
+}
+.half-card {
+    padding: 35px;
+    border-radius: 20px;
+    background: var(--bg-card);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.03);
+    border: 1px solid rgba(255,255,255,0.8);
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    overflow: hidden;
+}
+.half-card .card-title {
+    margin-bottom: 25px;
+}
+.dna-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 220px;
+}
+.dna-list li {
+    position: relative;
+    padding-left: 24px;
+    font-size: 15px;
+    color: #4A5568;
+    line-height: 1.6;
+}
+.dna-list li::before {
+    content: '•';
+    position: absolute;
+    left: 0; top: 0;
+    color: var(--primary);
+    font-size: 20px;
+    font-weight: bold;
+}
+.dna-list li strong {
+    color: #2D3748;
+}
+
+.qc-grid {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 220px;
+}
+.qc-box {
+    background: #F8FAFC;
+    border: 1px solid var(--border-color);
+    padding: 20px;
+    border-radius: 12px;
+    height: 100px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.qc-box h4 {
+    font-size: 16px;
+    font-weight: 700;
+    color: #2D3748;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.qc-box h4::before {
+    content: '';
+    display: block;
+    width: 6px; height: 6px;
+    background: var(--primary);
+    border-radius: 50%;
+}
+.qc-box p {
+    font-size: 13px;
+    color: #718096;
+    line-height: 1.5;
+}
+
+/* Footer */
+footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 14px;
+    color: var(--text-muted);
+    border-top: 1px solid var(--border-color);
+    padding-top: 10px;
+    height: 40px;
+}
+.footer-links span {
+    margin-left: 20px;
+    background: rgba(0,0,0,0.03);
+    padding: 4px 10px;
+    border-radius: 6px;
+}
+</style>
+</head>
+<body>
+    <div class="grid-bg"></div>
+    
+    <header>
+        <div class="header-left">
+            <h1>花叔橙皮书创作 Skill <span class="tag">Zerox 逆向工程版</span></h1>
+            <p>基于真实出版物与开源仓库提取的工业级技术书籍自动化创作框架</p>
+        </div>
+        <div class="header-right">
+            <div class="tech-stack">
+                <div class="tech-badge">Python 3.8+</div>
+                <div class="tech-badge">Pandoc & XeLaTeX</div>
+                <div class="tech-badge">Multi-Agent</div>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <!-- 第一栏：工作流 -->
+        <div class="card">
+            <div class="card-title">
+                <div class="icon-wrapper">🔄</div>
+                创作工作流
+            </div>
+            <div class="workflow">
+                <div class="step">
+                    <div class="step-num">01</div>
+                    <div class="step-content">
+                        <h4>确定蓝图与定位</h4>
+                        <p>选择适用的书籍 Type (A/B/C)，明确目标读者群与整体信息密度期望。</p>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-num">02</div>
+                    <div class="step-content">
+                        <h4>设计大纲结构</h4>
+                        <p>依据蓝图定义 Part 结构与章节编号，生成标准的 outline-schema。</p>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-num">03</div>
+                    <div class="step-content">
+                        <h4>信息源搜集</h4>
+                        <p>从官方文档、社区资源及源码中提取硬核知识，确立技术正确性。</p>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-num">04</div>
+                    <div class="step-content">
+                        <h4>模块化撰写</h4>
+                        <p>采用概念讲解、实战教程或深度分析模板，并严格注入“花叔风格 DNA”。</p>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-num">05</div>
+                    <div class="step-content">
+                        <h4>双重质量校验</h4>
+                        <p>执行 12 项章节级 QC 与 10 项全书级 QC，确保编号连续、格式统一。</p>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-num">06</div>
+                    <div class="step-content">
+                        <h4>编译与发布</h4>
+                        <p>一键通过 Pandoc + XeLaTeX 引擎导出具备精美排版的高清 PDF。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 第二栏：书籍蓝图 -->
+        <div class="card">
+            <div class="card-title">
+                <div class="icon-wrapper">📐</div>
+                三大书籍蓝图
+            </div>
+            <div class="blueprint-list">
+                <div class="bp-item">
+                    <div class="bp-header">
+                        <h3>Type A · 经典技术手册</h3>
+                        <div class="bp-badge">框架 / 标准</div>
+                    </div>
+                    <p><strong>结构设定</strong> 10章±2，划分 3 个 Part，使用中英双语标题</p>
+                    <p><strong>核心特征</strong> 结构严谨，知识点全覆盖，适合作为官方文档转化或系统性框架的权威指南。</p>
+                </div>
+                
+                <div class="bp-item">
+                    <div class="bp-header">
+                        <h3>Type B · 深度技术文档</h3>
+                        <div class="bp-badge">源码 / 底层</div>
+                    </div>
+                    <p><strong>结构设定</strong> 17-35节，5+ 个 Part，极高密度的代码块展示</p>
+                    <p><strong>核心特征</strong> 聚焦于源码级解析、底层逻辑剖析与架构推演，面向资深开发者的硬核读物。</p>
+                </div>
+
+                <div class="bp-item">
+                    <div class="bp-header">
+                        <h3>Type C · 快速实战指南</h3>
+                        <div class="bp-badge">入门 / 实践</div>
+                    </div>
+                    <p><strong>结构设定</strong> 12-17章，采用“核心概念 + 实战案例”交替模式</p>
+                    <p><strong>核心特征</strong> 强调快速上手与最佳实践落地，大幅降低阅读门槛，适合新技术尝鲜与培训。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 第三栏：风格与质量 -->
+        <div class="col-3-wrapper">
+            <div class="half-card">
+                <div class="card-title">
+                    <div class="icon-wrapper" style="background:#EBF8FF; color:#3182CE;">🧬</div>
+                    写作风格 DNA
+                </div>
+                <ul class="dna-list">
+                    <li><strong>极简句式约束：</strong>单句长度严格控制在 25 字以内，增强阅读节奏感。</li>
+                    <li><strong>对话式代入感：</strong>高频使用第一人称（"我"、"我们"），打破技术说明文的冰冷感。</li>
+                    <li><strong>量化与具象化：</strong>使用具体数据与明确定义，拒绝使用模糊量词。</li>
+                    <li><strong>AI 味消除：</strong>系统级禁用"综上所述"、"值得注意的是"等常见机器生成套话。</li>
+                </ul>
+            </div>
+            
+            <div class="half-card">
+                <div class="card-title">
+                    <div class="icon-wrapper" style="background:#E6FFFA; color:#38B2AC;">✅</div>
+                    质量控制系统
+                </div>
+                <div class="qc-grid">
+                    <div class="qc-box">
+                        <h4>章节级检查 (12项)</h4>
+                        <p>标题非空校验、Markdown 语法规范检查、代码块闭合完整性、警告/提示区块模式验证。</p>
+                    </div>
+                    <div class="qc-box">
+                        <h4>全书级检查 (10项)</h4>
+                        <p>专业术语全局统一性扫描、交叉引用链接有效性、Part 结构完整度、全局风格基调一致性评估。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="footer-left">
+            <strong>致敬与免责声明：</strong>本项目仅出于个人学习、研究与技术分享目的，对原作者花叔表达诚挚敬意与感谢。
+        </div>
+        <div class="footer-links">
+            <span>🎨 风格: 现代商务 (B2)</span>
+            <span>📐 尺寸: 16:9 横向宽图 (A2)</span>
+            <span>📦 密度: 高密度全景 (C3)</span>
+        </div>
+    </footer>
+</body>
+</html>
